@@ -6,7 +6,6 @@ const User = require('./models/user');
 const Route = require('./models/route');
 const Alert = require('./models/alert');
 const GPSLog = require('./models/gpsLog');
-const RiskZone = require('./models/riskZone');
 const LocationReminder = require('./models/locationReminder');
 const EmergencyMedia = require('./models/emergencyMedia');
 const RouteSafetyScore = require('./models/routeSafetyScore');
@@ -24,7 +23,6 @@ mongoose.connect(process.env.MONGO_URI, {
     await Route.deleteMany();
     await Alert.deleteMany();
     await GPSLog.deleteMany();
-    await RiskZone.deleteMany();
     await LocationReminder.deleteMany();
     await EmergencyMedia.deleteMany();
     await RouteSafetyScore.deleteMany();
@@ -71,15 +69,6 @@ mongoose.connect(process.env.MONGO_URI, {
       userId: user._id,
       location: { lat: 28.4595, lng: 77.0266 },
       speed: 60
-    });
-
-    // 5. Create Risk Zone
-    await RiskZone.create({
-      areaName: "Isolated Highway Stretch",
-      location: { lat: 27.1767, lng: 78.0081 },
-      dangerLevel: 8,
-      isLit: false,
-      description: "Poorly lit and low traffic area, known for past incidents"
     });
 
     // 6. Create Location Reminder
