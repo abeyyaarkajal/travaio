@@ -6,14 +6,7 @@ const userSchema = new mongoose.Schema({
   phone: { type: String },
   password: { type: String, required: true },
   gender: { type: String, enum: ['Male', 'Female', 'Other'] },
-  emergencyContacts: [
-    {
-      name: { type: String, required: true },
-      phone: { type: String, required: true },
-      email: { type: String },
-      relationship: { type: String }
-    }
-  ],
+
   createdAt: { type: Date, default: Date.now }
 });
 
