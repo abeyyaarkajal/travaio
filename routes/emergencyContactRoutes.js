@@ -1,37 +1,22 @@
-// routes/emergencyContactRoutes.js
 const express = require('express');
 const router = express.Router();
-const EmergencyContact = require('../models/emergencyContact');
+const EmergencyContact = require('../models/emergencyContactModel');
 
-// Create new emergency contact
 router.post('/', async (req, res) => {
   try {
-    const { name, phone, relationship, userId } = req.body;
-    const newContact = new EmergencyContact({ name, phone, relationship, userId });
-    await newContact.save();
-    res.status(201).json(newContact);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    const contact = await EmergencyContact.create(req.body);
+    res.status(201).json(contact);
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to create contact', details: err.message });
   }
 });
 
-// Get all emergency contacts for a user
-router.get('/:userId', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const contacts = await EmergencyContact.find({ userId: req.params.userId });
-    res.json(contacts);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Delete an emergency contact
-router.delete('/:id', async (req, res) => {
-  try {
-    await EmergencyContact.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Contact deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const contacts = await EmergencyContact.find();
+    res.status(200).json(contacts);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch contacts', details: err.message });
   }
 });
 
