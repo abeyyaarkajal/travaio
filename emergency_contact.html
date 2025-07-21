@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travaio - Emergency Contacts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 font-sans leading-relaxed tracking-wide flex flex-col min-h-screen">
+
+  <!-- 🌿 Travaio Header -->
+  <header class="bg-white shadow-md py-4 px-6 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="text-2xl font-bold text-emerald-600 tracking-wide">Travaio</div>
+      <nav class="hidden md:flex space-x-6">
+        <a href="index.html" class="text-gray-600 hover:text-emerald-600 transition">Home</a>
+        <a href="user_interface.html" class="text-gray-600 hover:text-emerald-600 transition">Dashboard</a>
+        <a href="index.html#safety" class="text-gray-600 hover:text-emerald-600 transition">Features</a>
+        <a href="contact.html" class="text-gray-600 hover:text-emerald-600 transition">Contact</a>
+      </nav>
+      <div class="md:hidden text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- 🌿 Emergency Contacts Form -->
+  <main class="flex-grow flex items-center justify-center py-12 px-4">
+    <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-4xl">
+      <h1 class="text-4xl font-extrabold text-center text-emerald-700 mb-10">Emergency Contacts</h1>
+
+      <form action="#" method="POST" class="space-y-12">
+        <!-- Primary Contact -->
+        <div>
+          <h2 class="text-2xl font-bold text-emerald-700 mb-6 border-b-2 border-emerald-200 pb-2">Primary Contact <span class="text-red-500">*</span></h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="primaryName" class="block text-sm font-medium text-gray-700">Full Name</label>
+              <input type="text" id="primaryName" name="primaryName" required
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="primaryRelation" class="block text-sm font-medium text-gray-700">Relation</label>
+              <input type="text" id="primaryRelation" name="primaryRelation" required
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="primaryPhone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <input type="tel" id="primaryPhone" name="primaryPhone" required
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Contact -->
+        <div>
+          <h2 class="text-2xl font-bold text-emerald-700 mb-6 border-b-2 border-emerald-200 pb-2">Secondary Contact</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="secondaryName" class="block text-sm font-medium text-gray-700">Full Name</label>
+              <input type="text" id="secondaryName" name="secondaryName"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="secondaryRelation" class="block text-sm font-medium text-gray-700">Relation</label>
+              <input type="text" id="secondaryRelation" name="secondaryRelation"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="secondaryPhone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <input type="tel" id="secondaryPhone" name="secondaryPhone"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional Contact -->
+        <div>
+          <h2 class="text-2xl font-bold text-emerald-700 mb-6 border-b-2 border-emerald-200 pb-2">Optional Contact</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="optionalName" class="block text-sm font-medium text-gray-700">Full Name</label>
+              <input type="text" id="optionalName" name="optionalName"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="optionalRelation" class="block text-sm font-medium text-gray-700">Relation</label>
+              <input type="text" id="optionalRelation" name="optionalRelation"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+            <div>
+              <label for="optionalPhone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <input type="tel" id="optionalPhone" name="optionalPhone"
+                     class="mt-1 block w-full rounded-xl border border-black shadow-sm p-3 focus:ring focus:ring-emerald-300"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center pt-4">
+          <button type="submit"
+                  class="bg-emerald-600 text-white px-8 py-3 rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-lg text-lg font-semibold">
+            Save Contacts
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- 🌿 Footer -->
+  <footer class="bg-white border-t border-gray-200 text-gray-600 mt-10">
+    <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-emerald-600 font-semibold text-lg">Travaio</p>
+      <div class="flex gap-6 text-sm">
+        <a href="#" class="hover:text-emerald-600 transition">Privacy Policy</a>
+        <a href="#" class="hover:text-emerald-600 transition">Terms of Use</a>
+        <a href="#" class="hover:text-emerald-600 transition">Help</a>
+      </div>
+      <p class="text-sm text-gray-500">&copy; 2025 Travaio. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
