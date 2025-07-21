@@ -13,6 +13,7 @@ const locationReminderRoutes = require('./routes/locationReminderRoutes');
 const routeRoutes = require('./routes/routeRoutes');
 const routeSafetyScoreRoutes = require('./routes/routeSafetyScoreRoutes');
 const emergencyMediaRoutes = require('./routes/emergencyMediaRoutes');
+const emergencyContactRoutes = require('./routes/emergencyContactRoutes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/locationreminders', locationReminderRoutes);
 app.use('/api/routes', routeRoutes);
 app.use('/api/routesafetyscores', routeSafetyScoreRoutes);
 app.use('/api/emergencymedias', emergencyMediaRoutes);
+app.use('/api/emergency-contacts', emergencyContactRoutes);
 
 // Default root route
 app.get('/', (req, res) => {
