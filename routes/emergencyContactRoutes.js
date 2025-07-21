@@ -1,23 +1,24 @@
-const express = require('express');
-const router = express.Router();
-const EmergencyContact = require('../models/emergencyContactModel');
+// models/emergencyContact.js
+const mongoose = require('mongoose');
 
-router.post('/', async (req, res) => {
-  try {
-    const contact = await EmergencyContact.create(req.body);
-    res.status(201).json(contact);
-  } catch (err) {
-    res.status(400).json({ error: 'Failed to create contact', details: err.message });
-  }
+const emergencyContactSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  relationship: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
-router.get('/', async (req, res) => {
-  try {
-    const contacts = await EmergencyContact.find();
-    res.status(200).json(contacts);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch contacts', details: err.message });
-  }
-});
-
-module.exports = router;
+module.exports = mongoose.model('EmergencyContact', emergencyContactSchema);
