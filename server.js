@@ -14,6 +14,7 @@ const routeRoutes = require('./routes/routeRoutes');
 const routeSafetyScoreRoutes = require('./routes/routeSafetyScoreRoutes');
 const emergencyMediaRoutes = require('./routes/emergencyMediaRoutes');
 const emergencyContactRoutes = require('./routes/emergencyContactRoutes');
+const alarmRoutes = require('./routes/alarmRoutes');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/routes', routeRoutes);
 app.use('/api/routesafetyscores', routeSafetyScoreRoutes);
 app.use('/api/emergencymedias', emergencyMediaRoutes);
 app.use('/api/emergency-contacts', emergencyContactRoutes);
+app.use('/api/alarms', alarmRoutes);
 
 // Default root route
 app.get('/', (req, res) => {
