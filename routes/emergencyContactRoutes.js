@@ -1,4 +1,8 @@
 // models/emergencyContact.js
+router.get("/ping", (req, res) => {
+  res.send("🚀 Server is reachable!");
+});
+
 const mongoose = require('mongoose');
 
 const emergencyContactSchema = new mongoose.Schema({
