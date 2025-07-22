@@ -21,6 +21,12 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 
+// Log every request (for debugging)
+app.use((req, res, next) => {
+  console.log(`➡️  ${req.method} ${req.url}`);
+  next();
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
@@ -35,11 +41,16 @@ app.use('/api/routes', routeRoutes);
 app.use('/api/routesafetyscores', routeSafetyScoreRoutes);
 app.use('/api/emergencymedias', emergencyMediaRoutes);
 app.use('/api/emergency-contacts', emergencyContactRoutes);
-app.use("/api/alarms", alarmRoutes);
+app.use('/api/alarms', alarmRoutes);
 
 // Default root route
 app.get('/', (req, res) => {
   res.send('🚀 Travaio Backend Running...');
+});
+
+// Catch-all for unknown routes
+app.use((req, res) => {
+  res.status(404).json({ message: "🔍 Route not found" });
 });
 
 // Start the server
