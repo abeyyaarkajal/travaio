@@ -9,6 +9,7 @@ const GPSLog = require('./models/gpsLog');
 const LocationReminder = require('./models/locationReminder');
 const EmergencyMedia = require('./models/emergencyMedia');
 const RouteSafetyScore = require('./models/routeSafetyScore');
+const emergencyContactRoutes = require('./routes/emergencyContactRoutes');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
