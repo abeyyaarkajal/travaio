@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | TRAVAIO</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="login-form">
+    <label>Email <input type="email" name="email" required></label><br>
+    <label>Password <input type="password" name="password" required></label><br>
+    <button type="submit">Login</button>
+  </form>
+  <p>No account? <a href="signup.html">Sign up</a></p>
+
+  <script>
+    const API_BASE_URL = window.API_BASE_URL || 'http://localhost:5000';
+    const form = document.getElementById('login-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          alert(json.msg || json.error || 'Login failed');
+          return;
+        }
+        // Save token + user in localStorage
+        localStorage.setItem('travaio_token', json.token);
+        localStorage.setItem('travaio_user', JSON.stringify(json.user));
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        console.error(err);
+        alert('Network error');
+      }
+    });
+  </script>
+</body>
+</html>
