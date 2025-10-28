@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Sign Up | TRAVAIO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>Create Account</h1>
+
+  <form id="signup-form" autocomplete="off">
+    <label>
+      Name
+      <input type="text" name="name" required />
+    </label><br>
+    <label>
+      Email
+      <input type="email" name="email" required />
+    </label><br>
+    <label>
+      Phone
+      <input type="tel" name="phone" required />
+    </label><br>
+    <label>
+      Password
+      <input type="password" name="password" required />
+    </label><br>
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <p>Already have an account? <a href="login.html">Login</a></p>
+
+  <div id="msg" style="margin-top:1rem;color:red;"></div>
+
+  <script>
+    // ---------- CONFIG ----------
+    const API_BASE_URL = window.API_BASE_URL || 'http://localhost:5000';
+
+    // ---------- HELPERS ----------
+    async function postJSON(url, data) {
+      console.log('[Signup] → POST', url, data);
+      let res, json;
+      try {
+        res = await fetch('http://localhost:5000/auth/signup', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: document.querySelector('input[name="name"]').value,
+    email: document.querySelector('input[name="email"]').value,
+    phone: document.querySelector('input[name="phone"]').value,
+    password: document.querySelector('input[name="password"]').value
+  })
+});
+      } catch (networkErr) {
+        throw new Error('NETWORK: Could not reach server. Is backend running?');
+      }
+
+      try {
+        json = await res.json();
+      } catch {
+        json = {};
+      }
+
+      if (!res.ok) {
+        const msg = json.msg || json.error || HTTP `${res.status}`;
+        throw new Error(msg);
+      }
+      return json;
+    }
+
+    function showMsg(text, isError = true) {
+      const el = document.getElementById('msg');
+      el.style.color = isError ? 'red' : 'green';
+      el.textContent = text;
+    }
+
+    // ---------- FORM HANDLER ----------
+    const form = document.getElementById('signup-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showMsg('Signing up...', false);
+
+      const data = Object.fromEntries(new FormData(form));
+      try {
+        const result = await postJSON(`${API_BASE_URL}/auth/signup, data`);
+        console.log('[Signup] success:', result);
+        showMsg('Signup successful! Redirecting to login…', false);
+        setTimeout(() => { window.location.href = 'login.html'; }, 800);
+      } catch (err) {
+        console.error('[Signup] error:', err);
+        showMsg(err.message || 'Signup failed.');
+      }
+    });
+  </script>
+</body>
+</html>
