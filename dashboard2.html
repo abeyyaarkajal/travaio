@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard | TRAVAIO</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { margin-bottom: 20px; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; max-width: 300px; }
+    #trip-list { margin-top: 20px; }
+    .trip { border: 1px solid #ccc; padding: 10px; margin: 5px 0; border-radius: 4px; }
+    #logout-btn { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>TRAVAIO Dashboard</h1>
+  <div id="user-info"></div>
+  <button id="logout-btn">Logout</button>
+
+  <hr />
+
+  <h2>Create a Trip</h2>
+  <form id="trip-form">
+    <label>Origin:
+      <input type="text" name="origin" required />
+    </label><br>
+    <label>Destination:
+      <input type="text" name="destination" required />
+    </label><br>
+    <label>Start Time:
+      <input type="datetime-local" name="startTime" required />
+    </label><br>
+    <button type="submit">Create Trip</button>
+  </form>
+
+  <h2>Your Trips</h2>
+  <div id="trip-list">Loading your trips...</div>
+
+  <script>
+    const API_BASE_URL = window.API_BASE_URL || 'http://localhost:5000';
+    const token = localStorage.getItem('travaio_token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    const userInfoDiv = document.getElementById('user-info');
+    const tripListDiv = document.getElementById('trip-list');
+    const tripForm = document.getElementById('trip-form');
+
+    // Load current user info
+    fetch(`${API_BASE_URL}/auth/me`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(res => res.json())
+    .then(user => {
+      if (user.msg || user.error) {
+        alert('Session expired. Please login again.');
+        localStorage.removeItem('travaio_token');
+        window.location.href = 'login.html';
+        return;
+      }
+      userInfoDiv.textContent = Logged in as`: ${user.name} (${user.email})`;
+      loadTrips();
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Failed to load user data');
+    });
+
+    // Load trips
+    function loadTrips() {
+      fetch(`${API_BASE_URL}/trip`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+      .then(res => res.json())
+      .then(trips => {
+        if (!Array.isArray(trips)) {
+          tripListDiv.textContent = 'No trips found.';
+          return;
+        }
+        tripListDiv.innerHTML = '';
+        if (trips.length === 0) {
+          tripListDiv.textContent = 'No trips found.';
+        } else {
+          trips.forEach(t => {
+  const div = document.createElement('div');
+  div.className = 'trip';
+
+  const tripText = document.createElement('div');
+  tripText.textContent =` ${t.origin} → ${t.destination} | Start: ${new Date(t.startTime).toLocaleString()} | Status: ${t.status}`;
+  div.appendChild(tripText);
+
+  const btn = document.createElement('button');
+  btn.textContent = 'Monitor Trip';
+  btn.onclick = () => {
+    window.location.href = `monitor.html?tripId=${t._id}`;
+  };
+  div.appendChild(btn);
+
+  tripListDiv.appendChild(div);
+});
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        tripListDiv.textContent = 'Failed to load trips.';
+      });
+    }
+
+    // Handle trip form submit
+    tripForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(tripForm));
+      try {
+        const res = await fetch(`${API_BASE_URL}/trip`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          alert(json.msg || json.error || 'Failed to create trip');
+          return;
+        }
+        alert('Trip created successfully!');
+        tripForm.reset();
+        loadTrips();
+      } catch (err) {
+        console.error(err);
+        alert('Network error');
+      }
+    });
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('travaio_token');
+      localStorage.removeItem('travaio_user');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
